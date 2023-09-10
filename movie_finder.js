@@ -1,5 +1,5 @@
-var inputElement = document.getElementById("input")
-var movieWrapper = document.getElementById("movie-wrapper")
+var inputElement = document.getElementById("search-input")
+var movieWrapper = document.getElementById("movie-cards")
 var Status = document.getElementById("status")
 
 function search() {
