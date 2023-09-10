@@ -1,52 +1,45 @@
-const API_URL = "http://www.omdbapi.com/?i=tt3896198&apikey=8ad164ad&s=";
-const API_URL_SEARCH="http://www.omdbapi.com/?apikey=8ad164ad&i=";
-var search_input = document.getElementById("search-input");
-var card = document.getElementsByClassName("movie-cards")[0];
+var inputElement = document.getElementById("input")
+var movieWrapper = document.getElementById("movie-wrapper")
+var Status = document.getElementById("status")
 
-document
-  .getElementsByClassName("search")[0]
-  .addEventListener("click", function () {
-    console.log(search_input.value);
-    const query = search_input.value;
-    if (query) {
-      getMovies(API_URL + query);
-    }
-  });
+function search() {
+    movieWrapper.innerHTML = " "
+    Status.innerHTML = "Loading..."
+    var value = inputElement.value
+    console.log(value)
+    $.get("https://www.omdbapi.com/?apikey=45f0782a&s=" + value, function (response) {
+        Status.innerHTML = ""
+        if (inputElement.value == "") {
+            alert("Enter movie name!!")
+        }
+        if (response.Response == "True") {
+            var movieData = response
+            for (var i = 0; i < movieData.Search.length; i++) {
+                var id = movieData.Search[i].imdbID
+                $.get("https://www.omdbapi.com/?apikey=8ad164ad&i="+id,function(response){
+                    var movieData = response
+                    console.log(movieData)
+                    movieWrapper.innerHTML += `
+                    <div id="movie-card">
+                                <img
+                                    src=${movieData.Poster} />
+                                <div id="data">
+                                <p><b>Title: </b><span>${movieData.Title}</span> </p>
+                                <hr>
+                        <p><b>Release Date: </b><span>${movieData.Released
+                        }</span> </p>
+                        <p><b>Director: </b><span>${movieData.Director}</span> </p>
+                        <p><b>imdbRating: </b><span>${movieData.imdbRating}</span> </p>
+                        <p><b>Genre: </b><span>${movieData.Genre}</span> </p>
+                                    
+                                </div>
+                            </div>`
+                    })
+                }
+        } else {
+            Status.innerText = "---404 Error Movie Not found---"
+        }
 
-async function getMovies(url) {
-  const resp = await fetch(url);
-  const respData = await resp.json();
-  console.log(respData);
-  showMovies(respData.Search);
-}
 
-function showMovies(movies) {
-  card.innerHTML = "";
-  if (movies) {
-    movies.forEach(async function (movie) {
-      console.log(movie.imdbID);
-      const movieData = await fetch(API_URL_SEARCH + movie.imdbID);
-      const movieDataobj = await movieData.json();
-      movie_display(movieDataobj);
-    });
-  }
-}
-
-function movie_display(imovie) {
-  const movieElm = document.createElement("div");
-  movieElm.classList.add ("movie-card");
-  movieElm.innerHTML = `
-        <div class="card">
-            <img src="${imovie.Poster}" alt="Poster" width="300px" height="300px" />
-            <br>
-            <div class="movie-decription">
-                <span class="movie-title"><b>Title</b> <span>${imovie.Title}</span></span>
-                <span class="movie-title"><b>IMDb Rating</b> <span>${imovie.imdbRating}</span></span>
-                <span class="movie-title"><b>Director</b> <span>${imovie.Director}</span></span>
-                <span class="movie-title"><b>Release Date</b> <span>${imovie.Released}</span></span>
-                <span class="movie-title"><b>Genre</b> <span>${imovie.Genre}</span></span>
-            </div>
-        </div>
-    `;
-  card.appendChild(movieElm);
+    })
 }
