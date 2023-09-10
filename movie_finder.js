@@ -21,14 +21,14 @@ function search() {
                     console.log(movieData)
                     movieWrapper.innerHTML +=  `
         <div class="card">
-            <img src="${imovie.Poster}" alt="Poster" width="300px" height="300px" />
+            <img src="${movieData.Poster}" alt="Poster" width="300px" height="300px" />
             <br>
             <div class="movie-decription">
-                <span class="movie-title"><b>Title</b> <span>${imovie.Title}</span></span>
-                <span class="movie-title"><b>IMDb Rating</b> <span>${imovie.imdbRating}</span></span>
-                <span class="movie-title"><b>Director</b> <span>${imovie.Director}</span></span>
-                <span class="movie-title"><b>Release Date</b> <span>${imovie.Released}</span></span>
-                <span class="movie-title"><b>Genre</b> <span>${imovie.Genre}</span></span>
+                <span class="movie-title"><b>Title</b> <span>${movieData.Title}</span></span>
+                <span class="movie-title"><b>IMDb Rating</b> <span>${movieData.imdbRating}</span></span>
+                <span class="movie-title"><b>Director</b> <span>${movieData.Director}</span></span>
+                <span class="movie-title"><b>Release Date</b> <span>${movieData.Released}</span></span>
+                <span class="movie-title"><b>Genre</b> <span>${movieData.Genre}</span></span>
             </div>
         </div>
     `;
